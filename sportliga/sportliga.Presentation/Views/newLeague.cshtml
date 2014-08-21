@@ -1,0 +1,20 @@
+﻿@{
+    PageData["title"] = "Nostradamus Soccer | New League";
+}
+<div class="row">
+    <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addNewLeague()">
+        <h2 class="text-center">New League</h2>
+        <div class="form-box">
+            <div class="form-group">
+                <input ng-model="IdLiga" type="text" class="form-control" placeholder="ID de la liga" required autofocus />
+            </div>
+            <div class="form-group">
+                <input ng-model="NombreEquipo" type="text" class="form-control" placeholder="Nombre de equipo" required />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit" ng-disabled="!(IdLiga && NombreEquipo)" disabled>Create</button>
+                <a class="btn btn-primary btn-block" href="/profile">Return</a>
+            </div>
+        </div>
+    </form>
+</div>

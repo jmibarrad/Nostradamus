@@ -1,0 +1,73 @@
+﻿@{
+    PageData["title"] = "SportLiga | Ingresar";
+}
+
+<link href="~/Views/Login.css" rel="stylesheet">
+
+<div class="container">
+
+    <div class="omb_login">
+        <p></p>
+        <p style="font-family: Gill Sans, Verdana; font-size: 11px; line-height: 14px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; padding-left: 30em">welcome member</p>
+        <p style=" font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color:darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold">Login</p><br/>
+        <!--<div class="row omb_row-sm-offset-3 omb_socialButtons">
+            <div class="col-xs-4 col-sm-2">
+                <a href="#" class="btn btn-lg btn-block omb_btn-facebook">
+                    <i class="fa fa-facebook visible-xs"></i>
+                    <span class="hidden-xs">Facebook</span>
+                </a>
+            </div>
+            <div class="col-xs-4 col-sm-2">
+                <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+                    <i class="fa fa-twitter visible-xs"></i>
+                    <span class="hidden-xs">Twitter</span>
+                </a>
+            </div>
+            <div class="col-xs-4 col-sm-2">
+                <a href="#" class="btn btn-lg btn-block omb_btn-google">
+                    <i class="fa fa-google-plus visible-xs"></i>
+                    <span class="hidden-xs">Google+</span>
+                </a>
+            </div>
+        </div>
+            -->
+        <div class="row omb_row-sm-offset-3 omb_loginOr">
+            <div class="col-xs-12 col-sm-6">
+                <hr class="omb_hrOr">
+                <span class="omb_spanOr">o</span>
+            </div>
+        </div>
+
+        <div class="row omb_row-sm-offset-3">
+            <div class="col-xs-12 col-sm-6">
+               <form class="omb_loginForm" ng-submit="login()">                   
+                        <div class=" input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="email" class="form-control" ng-model="username" placeholder="Correo electrónico" autocomplete="on" required>
+                        </div>
+                        <span class="help-block"></span>
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input type="password" class="form-control" ng-model="password" placeholder="Contraseña" required>
+                        </div>
+                        <p></p>
+                        <p></p>
+                         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>    
+                    </form>
+            </div>
+        </div>
+        <div class="row omb_row-sm-offset-3">
+            <div class="col-xs-12 col-sm-3">
+                <label class="checkbox">
+                    <input type="checkbox" value="remember-me">Remember me
+                </label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <p class="omb_forgotPwd">
+                    <a href="/forgot-password">Recover Password</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

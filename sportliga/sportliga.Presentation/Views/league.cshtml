@@ -1,0 +1,104 @@
+﻿<div class="btn-toolbar">
+  
+</div>
+<div class="panel-body">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <a href="" ng-click="ordenarPor('nombre')">
+                        Team Name/s
+                    </a>
+                    <span class="caret" style="cursor: pointer" ng-click="ordenarPor('-nombre')"></span>
+                </th>
+                <th style="width: 50px;"></th> 
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="team in FilterTeams">
+                <td>{{team.nombre}}</td>
+                <td>{{team.id_liga}}</td>
+                <td>{{team.active}}</td>
+                <td>
+                    <a style="color: red" href="" ng-click="editTeam(team.nombre)"><i class=" glyphicon glyphicon-flag"></i></a>
+                    <a style="color: yellowgreen" href="" ng-click="editTeam(team.nombre)"><i class=" glyphicon glyphicon-pencil"></i></a>
+                    <a style ="color: grey" href="" ng-click="deleteTeam(team.nombre)"><i class="glyphicon glyphicon-trash"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="btn-toolbar">
+        <button class="btn btn-primary" type="button" ng-click="activate()">New Game</button>
+        <button class="btn btn-primary" type="button" ng-click="activateNewTeam()">New Team</button>
+    </div>
+
+    <div class="row" ng-hide="addingTeam">
+        <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addNewTeam()">
+            <h2 class="text-center">Team´s Name</h2>
+            <div class="form-box">
+                <div class="form-group">
+                    <input ng-model="NombreEquipo" type="text" class="form-control" placeholder="Team´s name" required />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit" ng-disabled="!(NombreEquipo)" disabled>Add</button>
+                    <button class="btn btn-primary btn-block" type="button" ng-click="cancelTeam()">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" ng-show="isEditing">
+        <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="FinishEditing()">
+            <h2 class="text-center">Edit Name</h2>
+            <div class="form-box">
+                <div class="form-group">
+                    <input ng-model="NuevoNombre" type="text" class="form-control" placeholder="Team´s Name" required />
+                </div>
+                <div class="form-group">
+                
+                    <button class="btn btn-primary btn-block" type="submit">Save</button>
+                    <div class="alert alert-danger" role="alert" ng-show="NoNumbers">
+                        Error | Only numbers not allowed!
+                    </div>
+                        <button class="btn btn-primary btn-block" type="button" ng-click="cancelEdit()">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+<!--MOdify-->
+
+        <div class="row" ng-show="addingMatch">
+            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addMatch()">
+                <h2 class="text-center">Add New Game</h2>
+                <div class="form-box">
+                    <div class="form-group">
+                        <input ng-model="name1" type="text" class="form-control" placeholder="Team(1)" required />
+                        <input ng-model="name2" type="text" class="form-control" placeholder="Team(2)" required />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit">Save</button>
+                        <button class="btn btn-primary btn-block" type="button" ng-click="cancelMatch()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+
+<div class="row" ng-show="editResul">
+    <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addResultado()">
+        <h2 class="text-center">Edit Score</h2>
+        <div class="form-box">
+            <div class="form-group">
+                <input ng-model="newResult" type="text" class="form-control" placeholder="0-0" required />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit">Save</button>
+                <button class="btn btn-primary btn-block" type="button" ng-click="cancelResultado()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
