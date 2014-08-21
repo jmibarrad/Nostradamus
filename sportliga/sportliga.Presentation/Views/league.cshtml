@@ -28,60 +28,87 @@
             </tr>
         </tbody>
     </table>
+    
+    
+        <h2><strong><pre style="color: green; font-size: 20px; text-align: center">In League Duels</pre></strong></h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>StateParam</th>
+                    <th>Teams in Match</th>
+                    <th>Score</th>
+                    <th style="width: 50px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="match in matches">
+                    <td>{{match.id}}</td>
+                    <td>{{match.nombre1}} VS {{match.nombre2}}</td>
+                    <td>{{match.resultado}}</td>
+                    <td>
+                        <a href="" ng-click="activateResul(match.nombre1,match.nombre2)"><i class="glyphicon  glyphicon-eye-close"></i></a>
+                        <a href="" ng-click="activateMatchEdit(match.nombre1,match.nombre2)"><i class="glyphicon glyphicon-pencil"></i></a>
+                        <a href=""><i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
     <div class="btn-toolbar">
-        <button class="btn btn-primary" type="button" ng-click="activate()">New Game</button>
-        <button class="btn btn-primary" type="button" ng-click="activateNewTeam()">New Team</button>
+
+        <button class="btn btn-success" type="button" style="font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color: darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold" ng-click="activate()">New Game</button>
+        <button class="btn btn-warning" type="button" ng-click="activateNewTeam()">New Team</button>
     </div>
 
-    <div class="row" ng-hide="addingTeam">
-        <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addNewTeam()">
-            <h2 class="text-center">Team´s Name</h2>
-            <div class="form-box">
-                <div class="form-group">
-                    <input ng-model="NombreEquipo" type="text" class="form-control" placeholder="Team´s name" required />
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit" ng-disabled="!(NombreEquipo)" disabled>Add</button>
-                    <button class="btn btn-primary btn-block" type="button" ng-click="cancelTeam()">Cancel</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="row" ng-show="isEditing">
-        <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="FinishEditing()">
-            <h2 class="text-center">Edit Name</h2>
-            <div class="form-box">
-                <div class="form-group">
-                    <input ng-model="NuevoNombre" type="text" class="form-control" placeholder="Team´s Name" required />
-                </div>
-                <div class="form-group">
-                
-                    <button class="btn btn-primary btn-block" type="submit">Save</button>
-                    <div class="alert alert-danger" role="alert" ng-show="NoNumbers">
-                        Error | Only numbers not allowed!
+        <div class="row" ng-show="addingTeam">
+            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addNewTeam()">
+                <p style=" font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color:darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold">Team´s Name</p><br />
+                <div class="form-box">
+                    <div class="form-group">
+                        <input ng-model="NombreEquipo" type="text" class="form-control" placeholder="Team´s name" required />
                     </div>
-                        <button class="btn btn-primary btn-block" type="button" ng-click="cancelEdit()">Cancel</button>
+                    <div class="form-group">
+                        <button class="btn btn-info btn-block" type="submit" ng-disabled="!(NombreEquipo)" disabled>Add</button>
+                        <button class="btn btn-danger btn-block" type="button" ng-click="cancelTeam()">Cancel</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+
+        <div class="row" ng-show="isEditing">
+            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="FinishEditing()">
+                <p style=" font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color:darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold">Edit Name</p><br />
+                <div class="form-box">
+                    <div class="form-group">
+                        <input ng-model="NuevoNombre" type="text" class="form-control" placeholder="Team´s Name" required />
+                    </div>
+                    <div class="form-group">
+
+                        <button class="btn btn-success btn-block" type="submit">Save</button>
+                        <div class="alert alert-danger" role="alert" ng-show="NoNumbers">
+                            Error | Only numbers not allowed!
+                        </div>
+                        <button class="btn btn-danger btn-block" type="button" ng-click="cancelEdit()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
 
-<!--MOdify-->
+        <!--MOdify-->
 
         <div class="row" ng-show="addingMatch">
             <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addMatch()">
-                <h2 class="text-center">Add New Game</h2>
+                <p style=" font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color:darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold">Add New Game</p><br />
                 <div class="form-box">
                     <div class="form-group">
                         <input ng-model="name1" type="text" class="form-control" placeholder="Team(1)" required />
                         <input ng-model="name2" type="text" class="form-control" placeholder="Team(2)" required />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit">Save</button>
-                        <button class="btn btn-primary btn-block" type="button" ng-click="cancelMatch()">Cancel</button>
+                        <button class="btn btn-success btn-block" type="submit">Save</button>
+                        <button class="btn btn-danger btn-block" type="button" ng-click="cancelMatch()">Cancel</button>
                     </div>
                 </div>
             </form>
@@ -90,14 +117,14 @@
 
 <div class="row" ng-show="editResul">
     <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addResultado()">
-        <h2 class="text-center">Edit Score</h2>
+        <p style=" font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color:darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold">Edit Score</p><br />
         <div class="form-box">
             <div class="form-group">
                 <input ng-model="newResult" type="text" class="form-control" placeholder="0-0" required />
             </div>
             <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">Save</button>
-                <button class="btn btn-primary btn-block" type="button" ng-click="cancelResultado()">Cancel</button>
+                <button class="btn btn-success btn-block" type="submit">Save</button>
+                <button class="btn btn-warning btn-block" type="button" ng-click="cancelResultado()">Cancel</button>
             </div>
         </div>
     </form>

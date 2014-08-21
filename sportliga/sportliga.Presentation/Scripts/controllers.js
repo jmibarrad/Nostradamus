@@ -232,12 +232,12 @@ angular.module('app.controllers', [])
         $scope.addNewLeague = function () {
             $scope.ligas.push({
                 nombre: $scope.name,
-                pais: $scope.land,
+                pais: $scope.land,  
                 inicio: new Date(),
                 fin: new Date(),
                 cant_equipos: 15,
                 active: true,
-                id: parseInt(ident)
+                id: parseInt($scope.ident)
             });
 
             $scope.adding = false;
@@ -280,7 +280,7 @@ angular.module('app.controllers', [])
                 $scope.name1, nombre2:
                 $scope.name2, id:
                 $stateParams.id,
-                resultado: 'No Determinado Aun'
+                resultado: 'NULL'
             });
             $scope.addingMatch = false;
             $scope.name1 = "";
@@ -436,20 +436,43 @@ angular.module('app.controllers', [])
             $scope.newResult = "";
         }
 
-        $scope.matches = [{ nombre: 'Real Madrid vs Espanyol', id_liga: 1, fecha:new Date() , resultado1: 0 ,resultado2:0},
-                        { nombre: 'Villareal vs Valencia', id_liga: 1, fecha: new Date(), resultado1: 0, resultado2: 0},
-                        { nombre: 'Atletico de Madrid vs Barcelona', id_liga: 1, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'New Castle vs Wigan', id_liga: 3, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Manchester United vs Chelsea', id_liga: 3, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Aston Villa vs Liverpool', id_liga: 3, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'AS Roma vs Juventus', id_liga: 2, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'AC Milan vs Napoi', id_liga: 2, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Genoa vs Fiorentina', id_liga: 2, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Marseille vs Lyon', id_liga: 4, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Monaco vs Reims', id_liga: 4, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Toulouse vs Lens', id_liga: 4, fecha: new Date(), resultado1: 0, resultado2: 0 },
-                        { nombre: 'Bayern Munich vs Werder Bremen', id_liga: 5, fecha: new Date(), resultado1: 0, resultado2: 0}
-        ];
+        $scope.prenom1 = "";
+        $scope.prenom2 = "";
+        $scope.prenom3 = "";
+        $scope.prenom4 = "";
+
+        $scope.activateMatchEdit = function (chiamo, chiamo2) {
+            $scope.isEditingMatch = true;
+            $scope.editResul = false;
+            $scope.addingMatch = false;
+            $scope.isEditing = false;
+            $scope.addingTeam = false;
+            $scope.prenom1 = chiamo;
+            $scope.prenom2 = chiamo2;
+        }
+        $scope.finishMEdit = function () {
+            for (var i = 0; i < $scope.matches.length; i++) {
+                if ($scope.matches[i].nombre1 === $scope.prenom1 && $scope.matches[i].nombre2 === $scope.prenom2) {
+                    $scope.matches[i].nombre1 = $scope.prenom3;
+                    $scope.matches[i].nombre2 = $scope.prenom4;
+                }
+
+            }
+            $scope.isEditingMatch = false;
+            $scope.prenom1 = "";
+            $scope.prenom2 = "";
+            $scope.prenom3 = "";
+            $scope.prenom4 = "";
+        }
+
+        $scope.cancelMatchEdit = function () {
+            $scope.isEditingMatch = false;
+            $scope.prenom1 = "";
+            $scope.prenom2 = "";
+            $scope.prenom3 = "";
+            $scope.prenom4 = "";
+        }
+
 
 
 

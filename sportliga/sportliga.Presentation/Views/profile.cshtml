@@ -147,7 +147,7 @@
 
 <div class="row" ng-show="adding">
     <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addNewLeague()">
-        <h2 class="text-center">Add New League</h2>
+        <p style=" font-family: times, Times New Roman, times-roman, georgia, serif; color: #444; margin: 0; padding: 0px 0px 6px 0px; color:darkgoldenrod; font-size: 51px; line-height: 44px; padding-left: 10em; letter-spacing: -2px; font-weight: bold">Add New League</p><br />
         <div class="form-box">
             <div class="form-group">
                 <input ng-model="name" type="text" class="form-control" placeholder="League´s Name" required />
@@ -155,8 +155,8 @@
                 <input ng-model="ident" type="text" class="form-control" placeholder="ID" required />
             </div>
             <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">Save</button>
-                <button class="btn btn-primary btn-block" type="button" ng-click="cancelAdd()">Cancel</button>
+                <button class="btn btn-warning btn-block" type="submit">Save</button>
+                <button class="btn btn-danger btn-block" type="button" ng-click="cancelAdd()">Cancel</button>
             </div>
         </div>
     </form>
