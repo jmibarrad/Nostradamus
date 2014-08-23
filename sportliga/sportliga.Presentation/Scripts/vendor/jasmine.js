@@ -683,7 +683,7 @@ jasmine.util.formatException = function(e) {
     file = e.fileName;
   }
 
-  var message = (e.name && e.message) ? (e.name + ': ' + e.message) : e.toString();
+  var message = (e._leagueName && e.message) ? (e._leagueName + ': ' + e.message) : e.toString();
 
   if (file && lineNumber) {
     message += ' in ' + file + ' (line ' + lineNumber + ')';
@@ -970,11 +970,11 @@ jasmine.Env.prototype.equals_ = function(a, b, mismatchKeys, mismatchValues) {
   }
 
   if (a instanceof jasmine.Matchers.ObjectContaining) {
-    return a.matches(b);
+    return a.ArrMatches(b);
   }
 
   if (b instanceof jasmine.Matchers.ObjectContaining) {
-    return b.matches(a);
+    return b.ArrMatches(a);
   }
 
   if (jasmine.isString_(a) && jasmine.isString_(b)) {
@@ -1096,7 +1096,7 @@ jasmine.JsApiReporter.prototype.summarize_ = function(suiteOrSpec) {
   var isSuite = suiteOrSpec instanceof jasmine.Suite;
   var summary = {
     id: suiteOrSpec.id,
-    name: suiteOrSpec.description,
+    _leagueName: suiteOrSpec.description,
     type: isSuite ? 'suite' : 'spec',
     children: []
   };
@@ -2577,7 +2577,7 @@ jasmine.WaitsForBlock.prototype.execute = function(onComplete) {
   } else if (this.totalTimeSpentWaitingForLatch >= this.timeout) {
     var message = 'timed out after ' + this.timeout + ' msec waiting for ' + (this.message || 'something to happen');
     this.spec.fail({
-      name: 'timeout',
+      _leagueName: 'timeout',
       message: message
     });
 

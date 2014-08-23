@@ -206,7 +206,7 @@ function setupModuleLoader(window) {
            * @returns {string} Name of the module.
            * @description
            */
-          name: name,
+          _leagueName: name,
 
 
           /**

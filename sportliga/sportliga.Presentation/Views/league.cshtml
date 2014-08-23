@@ -18,7 +18,7 @@
         <tbody>
             <tr ng-repeat="team in FilterTeams">
                 <td>{{team.nombre}}</td>
-                <td>{{team.id_liga}}</td>
+                <td>{{team._leagueID}}</td>
                 <td>{{team.active}}</td>
                 <td>
                     <a style="color: red" href="" ng-click="editTeam(team.nombre)"><i class=" glyphicon glyphicon-flag"></i></a>
@@ -42,12 +42,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="match in matches">
+                <tr ng-repeat="match in ArrMatches">
                     <td>{{match.id}}</td>
                     <td>{{match.nombre1}} VS {{match.nombre2}}</td>
-                    <td>{{match.resultado}}</td>
+                    <td>{{match.MatchScore1}}-{{match.MatchScore2}}</td>
                     <td>
-                        <a href="" ng-click="activateResul(match.nombre1,match.nombre2)"><i class="glyphicon  glyphicon-eye-close"></i></a>
+                        <a href="" ng-click="IsActiveEditingScore(match.nombre1,match.nombre2)"><i class="glyphicon  glyphicon-eye-close"></i></a>
                         <a href="" ng-click="activateMatchEdit(match.nombre1,match.nombre2)"><i class="glyphicon glyphicon-pencil"></i></a>
                         <a href=""><i class="glyphicon glyphicon-trash"></i></a>
                     </td>
@@ -57,31 +57,31 @@
 
     <div class="btn-toolbar">
 
-        <button class="btn btn-success" type="button" ng-click="activate()">New Game</button>
+        <button class="btn btn-success" type="button" ng-click="AddMatchFunc()">New Game</button>
         <button class="btn btn-warning" type="button" ng-click="activateNewTeam()">New Team</button>
     </div>
 
-        <div class="row" ng-show="addingTeam">
+        <div class="row" ng-show="IsAddingTeam">
             <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addNewTeam()">
                 <h3 style="font-family: Garamond; color:#444444; text-align: center">Team´s Name</h3>
                 <div class="form-box">
                     <div class="form-group">
-                        <input ng-model="NombreEquipo" type="text" class="form-control" placeholder="Team´s name" required />
+                        <input ng-model="_TeamName" type="text" class="form-control" placeholder="Team´s name" required />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-info btn-block" type="submit" ng-disabled="!(NombreEquipo)" disabled>Add</button>
-                        <button class="btn btn-danger btn-block" type="button" ng-click="cancelTeam()">Cancel</button>
+                        <button class="btn btn-info btn-block" type="submit" ng-disabled="!(_TeamName)" disabled>Add</button>
+                        <button class="btn btn-danger btn-block" type="button" ng-click="cancelTeamAdd()">Cancel</button>
                     </div>
                 </div>
             </form>
         </div>
 
         <div class="row" ng-show="isEditing">
-            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="FinishEditing()">
+            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="IsTeamNameFinished()">
                 <h3 style="font-family: Garamond; color:#444444; text-align: center">Edit Name</h3>
                 <div class="form-box">
                     <div class="form-group">
-                        <input ng-model="NuevoNombre" type="text" class="form-control" placeholder="Team´s Name" required />
+                        <input ng-model="TeamNewName" type="text" class="form-control" placeholder="Team´s Name" required />
                     </div>
                     <div class="form-group">
 
@@ -98,33 +98,35 @@
 
         <!--MOdify-->
 
-        <div class="row" ng-show="addingMatch">
-            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addMatch()">
+        <div class="row" ng-show="IsAddingMatch">
+            <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="MatchToArray()">
                 <h3 style="font-family: Garamond; color:#444444; text-align: center">Add New Game</h3>
                 <div class="form-box">
                     <div class="form-group">
-                        <input ng-model="name1" type="text" class="form-control" placeholder="Team(1)" required />
-                        <input ng-model="name2" type="text" class="form-control" placeholder="Team(2)" required />
+                        <input ng-model="leName1" type="text" class="form-control" placeholder="Team(1)" required />
+                        <input ng-model="leName2" type="text" class="form-control" placeholder="Team(2)" required />
                     </div>
                     <div class="form-group">
                         <button class="btn btn-success btn-block" type="submit">Save</button>
-                        <button class="btn btn-danger btn-block" type="button" ng-click="cancelMatch()">Cancel</button>
+                        <button class="btn btn-danger btn-block" type="button" ng-click="RestoreValuesMatch()">Cancel</button>
                     </div>
                 </div>
             </form>
         </div>
 </div>
 
-<div class="row" ng-show="editResul">
+<div class="row" ng-show="IsEditingScore">
     <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" ng-submit="addResultado()">
         <h3 style="font-family: Garamond; color:#444444; text-align: center">Edit Name</h3>
         <div class="form-box">
             <div class="form-group">
-                <input ng-model="newResult" type="text" class="form-control" placeholder="0-0" required />
+                <input ng-model="_NewScore" type="number" class="form-control" placeholder="0" required />
+                <input ng-model="_NewScore2" type="number" class="form-control" placeholder="0" required />
+
             </div>
             <div class="form-group">
                 <button class="btn btn-success btn-block" type="submit">Save</button>
-                <button class="btn btn-warning btn-block" type="button" ng-click="cancelResultado()">Cancel</button>
+                <button class="btn btn-warning btn-block" type="button" ng-click="IsFinishedAddingScore()">Cancel</button>
             </div>
         </div>
     </form>

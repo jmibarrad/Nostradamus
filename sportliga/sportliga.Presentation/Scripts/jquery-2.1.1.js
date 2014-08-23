@@ -1540,7 +1540,7 @@ Expr = Sizzle.selectors = {
 		},
 
 		"CHILD": function( match ) {
-			/* matches from matchExpr["CHILD"]
+			/* ArrMatches from matchExpr["CHILD"]
 				1 type (only|nth|...)
 				2 what (child|of-type)
 				3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
@@ -2192,7 +2192,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 					results :
 				matcherIn;
 
-		// Find primary matches
+		// Find primary ArrMatches
 		if ( matcher ) {
 			matcher( matcherIn, matcherOut, context, xml );
 		}
@@ -2369,7 +2369,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				}
 
 				if ( seed ) {
-					// Reintegrate element matches to eliminate the need for sorting
+					// Reintegrate element ArrMatches to eliminate the need for sorting
 					if ( matchedCount > 0 ) {
 						while ( i-- ) {
 							if ( !(unmatched[i] || setMatched[i]) ) {
@@ -2378,14 +2378,14 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 						}
 					}
 
-					// Discard index placeholder values to get only actual matches
+					// Discard index placeholder values to get only actual ArrMatches
 					setMatched = condense( setMatched );
 				}
 
-				// Add matches to results
+				// Add ArrMatches to results
 				push.apply( results, setMatched );
 
-				// Seedless set matches succeeding multiple successful matchers stipulate sorting
+				// Seedless set ArrMatches succeeding multiple successful matchers stipulate sorting
 				if ( outermost && !seed && setMatched.length > 0 &&
 					( matchedCount + setMatchers.length ) > 1 ) {
 
@@ -3794,7 +3794,7 @@ jQuery.fn.extend({
 			var data,
 				camelKey = jQuery.camelCase( key );
 
-			// The calling jQuery object (element matches) is not empty
+			// The calling jQuery object (element ArrMatches) is not empty
 			// (and therefore has an element appears at this[ 0 ]) and the
 			// `value` parameter was not undefined. An empty jQuery object
 			// will result in `undefined` for elem = this[ 0 ] which will

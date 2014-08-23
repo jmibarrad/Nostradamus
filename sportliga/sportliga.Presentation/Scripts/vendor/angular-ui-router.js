@@ -783,7 +783,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       if (isDefined(state.parent) && state.parent) return findState(state.parent);
       // regex matches any valid composite state name
       // would match "contact.list" but not "contacts"
-      var compositeName = /^(.+)\.[^.]+$/.exec(state.name);
+      var compositeName = /^(.+)\.[^.]+$/.exec(state._leagueName);
       return compositeName ? findState(compositeName[1]) : root;
     },
 
@@ -836,7 +836,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       var views = {};
 
       forEach(isDefined(state.views) ? state.views : { '': state }, function (view, name) {
-        if (name.indexOf('@') < 0) name += '@' + state.parent.name;
+        if (name.indexOf('@') < 0) name += '@' + state.parent._leagueName;
         views[name] = view;
       });
       return views;
@@ -850,7 +850,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
 
       forEach(state.parent.params, function (p) {
         if (!paramNames[p]) {
-          throw new Error("Missing required parameter '" + p + "' in state '" + state.name + "'");
+          throw new Error("Missing required parameter '" + p + "' in state '" + state._leagueName + "'");
         }
         paramNames[p] = false;
       });
@@ -870,7 +870,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
     // Speed up $state.contains() as it's used a lot
     includes: function(state) {
       var includes = state.parent ? extend({}, state.parent.includes) : {};
-      includes[state.name] = true;
+      includes[state._leagueName] = true;
       return includes;
     },
 
@@ -883,7 +883,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
 
   function findState(stateOrName, base) {
     var isStr = isString(stateOrName),
-        name  = isStr ? stateOrName : stateOrName.name,
+        name  = isStr ? stateOrName : stateOrName._leagueName,
         path  = isRelative(name);
 
     if (path) {
@@ -896,14 +896,14 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
           continue;
         }
         if (rel[i] === "^") {
-          if (!current.parent) throw new Error("Path '" + name + "' not valid for state '" + base.name + "'");
+          if (!current.parent) throw new Error("Path '" + name + "' not valid for state '" + base._leagueName + "'");
           current = current.parent;
           continue;
         }
         break;
       }
       rel = rel.slice(i).join(".");
-      name = current.name + (current.name && rel ? "." : "") + rel;
+      name = current._leagueName + (current._leagueName && rel ? "." : "") + rel;
     }
     var state = states[name];
 
@@ -925,10 +925,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
     state = inherit(state, {
       self: state,
       resolve: state.resolve || {},
-      toString: function() { return this.name; }
+      toString: function() { return this._leagueName; }
     });
 
-    var name = state.name;
+    var name = state._leagueName;
     if (!isString(name) || name.indexOf('@') >= 0) throw new Error("State must have a valid name");
     if (states.hasOwnProperty(name)) throw new Error("State '" + name + "'' is already defined");
 
@@ -969,7 +969,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
 
   // Implicit root state that is always active
   root = registerState({
-    name: '',
+    _leagueName: '',
     url: '^',
     views: null,
     'abstract': true
@@ -1002,7 +1002,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
   function state(name, definition) {
     /*jshint validthis: true */
     if (isObject(name)) definition = name;
-    else definition.name = name;
+    else definition._leagueName = name;
     registerState(definition);
     return this;
   }
@@ -1223,7 +1223,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
         return undefined;
       }
 
-      if (!isDefined($state.$current.includes[state.name])) {
+      if (!isDefined($state.$current.includes[state._leagueName])) {
         return false;
       }
 
@@ -1398,7 +1398,7 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $an
     compile: function (element, attr, transclude) {
       return function(scope, element, attr) {
         var viewScope, viewLocals,
-            name = attr[directive.name] || attr.name || '',
+            name = attr[directive._leagueName] || attr._leagueName || '',
             onloadExp = attr.onload || '',
             animate = isDefined($animator) && $animator(scope, attr),
             initialView = transclude(scope);
@@ -1434,8 +1434,8 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $an
         // to derive our own qualified view name, then hang our own details
         // off the DOM so child directives can find it.
         var parent = element.parent().inheritedData('$uiView');
-        if (name.indexOf('@') < 0) name  = name + '@' + (parent ? parent.state.name : '');
-        var view = { name: name, state: null };
+        if (name.indexOf('@') < 0) name  = name + '@' + (parent ? parent.state._leagueName : '');
+        var view = { _leagueName: name, state: null };
         element.data('$uiView', view);
 
         var eventHook = function() {
@@ -1520,7 +1520,7 @@ function $StateRefDirective($state) {
 
       var stateData = element.parent().inheritedData('$uiView');
 
-      if (stateData && stateData.state && stateData.state.name) {
+      if (stateData && stateData.state && stateData.state._leagueName) {
         base = stateData.state;
       }
 
@@ -1601,7 +1601,7 @@ function $RouteProvider(  $stateProvider,    $urlRouterProvider) {
       // Regular route, configure as state
       $stateProvider.state(inherit(route, {
         parent: null,
-        name: 'route:' + encodeURIComponent(url),
+        _leagueName: 'route:' + encodeURIComponent(url),
         url: url,
         onEnter: onEnterRoute,
         onExit: onExitRoute
@@ -1622,7 +1622,7 @@ function $RouteProvider(  $stateProvider,    $urlRouterProvider) {
     };
 
     function stateAsRoute(state) {
-      return (state.name !== '') ? state : undefined;
+      return (state._leagueName !== '') ? state : undefined;
     }
 
     $rootScope.$on('$stateChangeStart', function (ev, to, toParams, from, fromParams) {

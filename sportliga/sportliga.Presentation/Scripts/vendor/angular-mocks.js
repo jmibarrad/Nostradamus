@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license AngularJS v1.2.3
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
@@ -646,7 +646,7 @@ angular.mock.TzDate = function (offset, timestamp) {
     timestamp = self.origDate.getTime();
     if (isNaN(timestamp))
       throw {
-        name: "Illegal Argument",
+        _leagueName: "Illegal Argument",
         message: "Arg '" + tsStr + "' passed into TzDate constructor is not a valid date string"
       };
   } else {
@@ -845,7 +845,7 @@ angular.mock.dump = function(object) {
       if (angular.isFunction(object.$eval) && angular.isFunction(object.$apply)) {
         out = serializeScope(object);
       } else if (object instanceof Error) {
-        out = object.stack || ('' + object.name + ': ' + object.message);
+        out = object.stack || ('' + object._leagueName + ': ' + object.message);
       } else {
         // TODO(i): this prevents methods being logged,
         // we should have a better way to serialize objects

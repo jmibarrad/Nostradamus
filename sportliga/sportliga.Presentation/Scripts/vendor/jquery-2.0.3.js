@@ -1649,7 +1649,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 	return doc;
 };
 
-Sizzle.matches = function( expr, elements ) {
+Sizzle.ArrMatches = function( expr, elements ) {
 	return Sizzle( expr, null, null, elements );
 };
 
@@ -2305,7 +2305,7 @@ function tokenize( selector, parseOnly ) {
 				tokens.push({
 					value: matched,
 					type: type,
-					matches: match
+					ArrMatches: match
 				});
 				soFar = soFar.slice( matched.length );
 			}
@@ -2540,7 +2540,7 @@ function matcherFromTokens( tokens ) {
 		if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
 			matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
 		} else {
-			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
+			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].ArrMatches );
 
 			// Return special upon seeing a positional matcher
 			if ( matcher[ expando ] ) {
@@ -2721,7 +2721,7 @@ function select( selector, context, results, seed ) {
 					support.getById && context.nodeType === 9 && documentIsHTML &&
 					Expr.relative[ tokens[1].type ] ) {
 
-				context = ( Expr.find["ID"]( token.matches[0].replace(runescape, funescape), context ) || [] )[0];
+				context = ( Expr.find["ID"]( token.ArrMatches[0].replace(runescape, funescape), context ) || [] )[0];
 				if ( !context ) {
 					return results;
 				}
@@ -2740,7 +2740,7 @@ function select( selector, context, results, seed ) {
 				if ( (find = Expr.find[ type ]) ) {
 					// Search, expanding context for leading sibling combinators
 					if ( (seed = find(
-						token.matches[0].replace( runescape, funescape ),
+						token.ArrMatches[0].replace( runescape, funescape ),
 						rsibling.test( tokens[0].type ) && context.parentNode || context
 					)) ) {
 
@@ -3538,7 +3538,7 @@ jQuery.fn.extend({
 				if ( elem.nodeType === 1 && !data_priv.get( elem, "hasDataAttrs" ) ) {
 					attrs = elem.attributes;
 					for ( ; i < attrs.length; i++ ) {
-						name = attrs[ i ].name;
+						name = attrs[ i ]._leagueName;
 
 						if ( name.indexOf( "data-" ) === 0 ) {
 							name = jQuery.camelCase( name.slice(5) );
@@ -5347,7 +5347,7 @@ jQuery.extend({
 
 		return elems.length === 1 && elem.nodeType === 1 ?
 			jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [] :
-			jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
+			jQuery.find.ArrMatches( expr, jQuery.grep( elems, function( elem ) {
 				return elem.nodeType === 1;
 			}));
 	},
@@ -6637,7 +6637,7 @@ jQuery.fn.extend({
 		.filter(function(){
 			var type = this.type;
 			// Use .is(":disabled") so that fieldset[disabled] works
-			return this.name && !jQuery( this ).is( ":disabled" ) &&
+			return this._leagueName && !jQuery( this ).is( ":disabled" ) &&
 				rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
 				( this.checked || !manipulation_rcheckableType.test( type ) );
 		})
@@ -6648,9 +6648,9 @@ jQuery.fn.extend({
 				null :
 				jQuery.isArray( val ) ?
 					jQuery.map( val, function( val ){
-						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+						return { _leagueName: elem._leagueName, value: val.replace( rCRLF, "\r\n" ) };
 					}) :
-					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+					{ _leagueName: elem._leagueName, value: val.replace( rCRLF, "\r\n" ) };
 		}).get();
 	}
 });
@@ -6675,7 +6675,7 @@ jQuery.param = function( a, traditional ) {
 	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
 		// Serialize the form elements
 		jQuery.each( a, function() {
-			add( this.name, this.value );
+			add( this._leagueName, this.value );
 		});
 
 	} else {

@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * jQuery JavaScript Library v1.10.2
  * http://jquery.com/
  *
@@ -1785,7 +1785,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 	return doc;
 };
 
-Sizzle.matches = function( expr, elements ) {
+Sizzle.ArrMatches = function( expr, elements ) {
 	return Sizzle( expr, null, null, elements );
 };
 
@@ -2441,7 +2441,7 @@ function tokenize( selector, parseOnly ) {
 				tokens.push({
 					value: matched,
 					type: type,
-					matches: match
+					ArrMatches: match
 				});
 				soFar = soFar.slice( matched.length );
 			}
@@ -2676,7 +2676,7 @@ function matcherFromTokens( tokens ) {
 		if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
 			matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
 		} else {
-			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
+			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].ArrMatches );
 
 			// Return special upon seeing a positional matcher
 			if ( matcher[ expando ] ) {
@@ -2857,7 +2857,7 @@ function select( selector, context, results, seed ) {
 					support.getById && context.nodeType === 9 && documentIsHTML &&
 					Expr.relative[ tokens[1].type ] ) {
 
-				context = ( Expr.find["ID"]( token.matches[0].replace(runescape, funescape), context ) || [] )[0];
+				context = ( Expr.find["ID"]( token.ArrMatches[0].replace(runescape, funescape), context ) || [] )[0];
 				if ( !context ) {
 					return results;
 				}
@@ -2876,7 +2876,7 @@ function select( selector, context, results, seed ) {
 				if ( (find = Expr.find[ type ]) ) {
 					// Search, expanding context for leading sibling combinators
 					if ( (seed = find(
-						token.matches[0].replace( runescape, funescape ),
+						token.ArrMatches[0].replace( runescape, funescape ),
 						rsibling.test( tokens[0].type ) && context.parentNode || context
 					)) ) {
 
@@ -3811,7 +3811,7 @@ jQuery.fn.extend({
 				if ( elem.nodeType === 1 && !jQuery._data( elem, "parsedAttrs" ) ) {
 					attrs = elem.attributes;
 					for ( ; i < attrs.length; i++ ) {
-						name = attrs[i].name;
+						name = attrs[i]._leagueName;
 
 						if ( name.indexOf("data-") === 0 ) {
 							name = jQuery.camelCase( name.slice(5) );
@@ -4577,7 +4577,7 @@ if ( !getSetAttribute ) {
 				undefined;
 		}
 	};
-	jQuery.expr.attrHandle.id = jQuery.expr.attrHandle.name = jQuery.expr.attrHandle.coords =
+	jQuery.expr.attrHandle.id = jQuery.expr.attrHandle._leagueName = jQuery.expr.attrHandle.coords =
 		// Some attributes are constructed with empty-string values when not defined
 		function( elem, name, isXML ) {
 			var ret;
@@ -5922,7 +5922,7 @@ jQuery.extend({
 
 		return elems.length === 1 && elem.nodeType === 1 ?
 			jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [] :
-			jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
+			jQuery.find.ArrMatches( expr, jQuery.grep( elems, function( elem ) {
 				return elem.nodeType === 1;
 			}));
 	},
@@ -7472,7 +7472,7 @@ jQuery.fn.extend({
 		.filter(function(){
 			var type = this.type;
 			// Use .is(":disabled") so that fieldset[disabled] works
-			return this.name && !jQuery( this ).is( ":disabled" ) &&
+			return this._leagueName && !jQuery( this ).is( ":disabled" ) &&
 				rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
 				( this.checked || !manipulation_rcheckableType.test( type ) );
 		})
@@ -7483,9 +7483,9 @@ jQuery.fn.extend({
 				null :
 				jQuery.isArray( val ) ?
 					jQuery.map( val, function( val ){
-						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+						return { _leagueName: elem._leagueName, value: val.replace( rCRLF, "\r\n" ) };
 					}) :
-					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+					{ _leagueName: elem._leagueName, value: val.replace( rCRLF, "\r\n" ) };
 		}).get();
 	}
 });
@@ -7510,7 +7510,7 @@ jQuery.param = function( a, traditional ) {
 	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
 		// Serialize the form elements
 		jQuery.each( a, function() {
-			add( this.name, this.value );
+			add( this._leagueName, this.value );
 		});
 
 	} else {
@@ -11038,7 +11038,7 @@ function angularInit(element, bootstrap) {
         module = (match[2] || '').replace(/\s+/g, ',');
       } else {
         forEach(element.attributes, function(attr) {
-          if (!appElement && names[attr.name]) {
+          if (!appElement && names[attr._leagueName]) {
             appElement = element;
             module = attr.value;
           }
@@ -11097,11 +11097,11 @@ function bootstrap(element, modules) {
 
   var NG_DEFER_BOOTSTRAP = /^NG_DEFER_BOOTSTRAP!/;
 
-  if (window && !NG_DEFER_BOOTSTRAP.test(window.name)) {
+  if (window && !NG_DEFER_BOOTSTRAP.test(window._leagueName)) {
     return doBootstrap();
   }
 
-  window.name = window.name.replace(NG_DEFER_BOOTSTRAP, '');
+  window._leagueName = window._leagueName.replace(NG_DEFER_BOOTSTRAP, '');
   angular.resumeBootstrap = function(extraModules) {
     forEach(extraModules, function(module) {
       modules.push(module);
@@ -11158,7 +11158,7 @@ function assertArgFn(arg, name, acceptArrayAnnotation) {
   }
 
   assertArg(isFunction(arg), name, 'not a function, got ' +
-      (arg && typeof arg == 'object' ? arg.constructor.name || 'Object' : typeof arg));
+      (arg && typeof arg == 'object' ? arg.constructor._leagueName || 'Object' : typeof arg));
   return arg;
 }
 
@@ -11348,7 +11348,7 @@ function setupModuleLoader(window) {
            * @returns {string} Name of the module.
            * @description
            */
-          name: name,
+          _leagueName: name,
 
 
           /**
@@ -14943,8 +14943,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 }
                 directive.priority = directive.priority || 0;
                 directive.index = index;
-                directive.name = directive.name || name;
-                directive.require = directive.require || (directive.controller && directive.name);
+                directive._leagueName = directive._leagueName || name;
+                directive.require = directive.require || (directive.controller && directive._leagueName);
                 directive.restrict = directive.restrict || 'A';
                 directives.push(directive);
               } catch (e) {
@@ -15391,7 +15391,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
             attr = nAttrs[j];
             if (!msie || msie >= 8 || attr.specified) {
-              name = attr.name;
+              name = attr._leagueName;
               // support ngAttr attribute binding
               ngAttrName = directiveNormalize(name);
               if (NG_ATTR_BINDING.test(ngAttrName)) {
@@ -15578,7 +15578,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           }
         }
 
-        directiveName = directive.name;
+        directiveName = directive._leagueName;
 
         if (!directive.templateUrl && directive.controller) {
           directiveValue = directive.controller;
@@ -15610,7 +15610,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             replaceWith(jqCollection, jqLite(sliceArgs($template)), compileNode);
 
             childTranscludeFn = compile($template, transcludeFn, terminalPriority,
-                                        replaceDirective && replaceDirective.name, {
+                                        replaceDirective && replaceDirective._leagueName, {
                                           // Don't pass in:
                                           // - controllerDirectives - otherwise we'll create duplicates controllers
                                           // - newIsolateScopeDirective or templateDirective - combining templates with
@@ -15831,7 +15831,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                   lastValue = isolateScope[scopeName] = parentGet(scope);
                   throw $compileMinErr('nonassign',
                       "Expression '{0}' used with directive '{1}' is non-assignable!",
-                      attrs[attrName], newIsolateScopeDirective.name);
+                      attrs[attrName], newIsolateScopeDirective._leagueName);
                 };
                 lastValue = isolateScope[scopeName] = parentGet(scope);
                 isolateScope.$watch(function parentValueWatch() {
@@ -15862,7 +15862,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 throw $compileMinErr('iscp',
                     "Invalid isolate scope definition for directive '{0}'." +
                     " Definition: {... {1}: '{2}' ...}",
-                    newIsolateScopeDirective.name, scopeName, definition);
+                    newIsolateScopeDirective._leagueName, scopeName, definition);
             }
           });
         }
@@ -15878,7 +15878,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
             controller = directive.controller;
             if (controller == '@') {
-              controller = attrs[directive.name];
+              controller = attrs[directive._leagueName];
             }
 
             controllerInstance = $controller(controller, locals);
@@ -15887,9 +15887,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             // clean up (http://bugs.jquery.com/ticket/8335).
             // Instead, we save the controllers for the element in a local hash and attach to .data
             // later, once we have the actual element.
-            elementControllers[directive.name] = controllerInstance;
+            elementControllers[directive._leagueName] = controllerInstance;
             if (!hasElementTranscludeDirective) {
-              $element.data('$' + directive.name + 'Controller', controllerInstance);
+              $element.data('$' + directive._leagueName + 'Controller', controllerInstance);
             }
 
             if (directive.controllerAs) {
@@ -16065,7 +16065,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if ($template.length != 1 || compileNode.nodeType !== 1) {
               throw $compileMinErr('tplrt',
                   "Template for directive '{0}' must have exactly one root element. {1}",
-                  origAsyncDirective.name, templateUrl);
+                  origAsyncDirective._leagueName, templateUrl);
             }
 
             tempTemplateAttrs = {$attr: {}};
@@ -16140,7 +16140,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     function byPriority(a, b) {
       var diff = b.priority - a.priority;
       if (diff !== 0) return diff;
-      if (a.name !== b.name) return (a.name < b.name) ? -1 : 1;
+      if (a._leagueName !== b._leagueName) return (a._leagueName < b._leagueName) ? -1 : 1;
       return a.index - b.index;
     }
 
@@ -16148,7 +16148,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     function assertNoDuplicate(what, previousDirective, directive, element) {
       if (previousDirective) {
         throw $compileMinErr('multidir', 'Multiple directives [{0}, {1}] asking for {2} on: {3}',
-            previousDirective.name, directive.name, what, startingTag(element));
+            previousDirective._leagueName, directive._leagueName, what, startingTag(element));
       }
     }
 
@@ -16474,7 +16474,7 @@ function $ControllerProvider() {
         if (!(locals && typeof locals.$scope == 'object')) {
           throw minErr('$controller')('noscp',
               "Cannot export controller '{0}' as '{1}'! No $scope object provided via `locals`.",
-              constructor || expression.name, identifier);
+              constructor || expression._leagueName, identifier);
         }
 
         locals.$scope[identifier] = instance;
@@ -21329,7 +21329,7 @@ function $RootScopeProvider(){
                       logIdx = 4 - ttl;
                       if (!watchLog[logIdx]) watchLog[logIdx] = [];
                       logMsg = (isFunction(watch.exp))
-                          ? 'fn: ' + (watch.exp.name || watch.exp.toString())
+                          ? 'fn: ' + (watch.exp._leagueName || watch.exp.toString())
                           : watch.exp;
                       logMsg += '; newVal: ' + toJson(value) + '; oldVal: ' + toJson(last);
                       watchLog[logIdx].push(logMsg);
@@ -21640,7 +21640,7 @@ function $RootScopeProvider(){
             scope = this,
             stopPropagation = false,
             event = {
-              name: name,
+              _leagueName: name,
               targetScope: scope,
               stopPropagation: function() {stopPropagation = true;},
               preventDefault: function() {
@@ -21707,7 +21707,7 @@ function $RootScopeProvider(){
             current = target,
             next = target,
             event = {
-              name: name,
+              _leagueName: name,
               targetScope: target,
               preventDefault: function() {
                 event.defaultPrevented = true;
@@ -24424,7 +24424,7 @@ var htmlAnchorDirective = valueFn({
 
       // turn <a href ng-click="..">link</a> into a stylable link in IE
       // but only if it doesn't have name attribute, in which case it's an anchor
-      if (!attr.href && !attr.name) {
+      if (!attr.href && !attr._leagueName) {
         attr.$set('href', '');
       }
 
@@ -24854,7 +24854,7 @@ function FormController(element, attrs) {
       controls = [];
 
   // init state
-  form.$name = attrs.name || attrs.ngForm;
+  form.$name = attrs._leagueName || attrs.ngForm;
   form.$dirty = false;
   form.$pristine = true;
   form.$valid = true;
@@ -25121,7 +25121,7 @@ function FormController(element, attrs) {
 var formDirectiveFactory = function(isNgForm) {
   return ['$timeout', function($timeout) {
     var formDirective = {
-      name: 'form',
+      _leagueName: 'form',
       restrict: isNgForm ? 'EAC' : 'E',
       controller: FormController,
       compile: function() {
@@ -25152,7 +25152,7 @@ var formDirectiveFactory = function(isNgForm) {
             }
 
             var parentFormCtrl = formElement.parent().controller('form'),
-                alias = attr.name || attr.ngForm;
+                alias = attr._leagueName || attr.ngForm;
 
             if (alias) {
               setter(scope, alias, controller, alias);
@@ -25813,7 +25813,7 @@ function emailInputType(scope, element, attr, ctrl, $sniffer, $browser) {
 
 function radioInputType(scope, element, attr, ctrl) {
   // make the name unique, if not defined
-  if (isUndefined(attr.name)) {
+  if (isUndefined(attr._leagueName)) {
     element.attr('name', nextUid());
   }
 
@@ -26175,7 +26175,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
   this.$dirty = false;
   this.$valid = true;
   this.$invalid = false;
-  this.$name = $attr.name;
+  this.$name = $attr._leagueName;
 
   var ngModelGet = $parse($attr.ngModel),
       ngModelSet = ngModelGet.assign;
@@ -30133,7 +30133,7 @@ angular.scenario.dsl = angular.scenario.dsl || function(name, fn) {
  */
 angular.scenario.matcher = angular.scenario.matcher || function(name, fn) {
   angular.scenario.matcher[name] = function(expected) {
-    var description = this.future.name +
+    var description = this.future._leagueName +
                       (this.inverse ? ' not ' : ' ') + name +
                       ' ' + angular.toJson(expected);
     var self = this;
@@ -30630,7 +30630,7 @@ angular.scenario.Application.prototype.navigateTo = function(url, loadFn, errorF
     }).attr('src', url);
 
     // for IE compatibility set the name *after* setting the frame url
-    frame[0].contentWindow.name = "NG_DEFER_BOOTSTRAP!";
+    frame[0].contentWindow._leagueName = "NG_DEFER_BOOTSTRAP!";
   }
   self.context.find('> h2 a').attr('href', url).text(url);
 };
@@ -30680,7 +30680,7 @@ angular.scenario.Describe = function(descName, parent) {
   this.afterEachFns = [];
   this.its = [];
   this.children = [];
-  this.name = descName;
+  this._leagueName = descName;
   this.parent = parent;
   this.id = angular.scenario.Describe.id++;
 
@@ -30768,7 +30768,7 @@ angular.scenario.Describe.prototype.it = function(name, body) {
     id: angular.scenario.Describe.specId++,
     definition: this,
     only: this.only,
-    name: name,
+    _leagueName: name,
     before: this.setupBefore,
     body: body,
     after: this.setupAfter
@@ -30829,7 +30829,7 @@ angular.scenario.Describe.prototype.getSpecs = function() {
  * @param {function()} line Optional. function that returns the file/line number.
  */
 angular.scenario.Future = function(name, behavior, line) {
-  this.name = name;
+  this._leagueName = name;
   this.behavior = behavior;
   this.fulfilled = false;
   this.value = undefined;
@@ -30902,7 +30902,7 @@ angular.scenario.ObjectModel = function(runner) {
   this.specMap = {};
   this.listeners = [];
   this.value = {
-    name: '',
+    _leagueName: '',
     children: {}
   };
 
@@ -30911,21 +30911,21 @@ angular.scenario.ObjectModel = function(runner) {
         definitions = [];
 
     angular.forEach(self.getDefinitionPath(spec), function(def) {
-      if (!block.children[def.name]) {
-        block.children[def.name] = {
+      if (!block.children[def._leagueName]) {
+        block.children[def._leagueName] = {
           id: def.id,
-          name: def.name,
+          _leagueName: def._leagueName,
           children: {},
           specs: {}
         };
       }
-      block = block.children[def.name];
-      definitions.push(def.name);
+      block = block.children[def._leagueName];
+      definitions.push(def._leagueName);
     });
 
     var it = self.specMap[spec.id] =
-             block.specs[spec.name] =
-             new angular.scenario.ObjectModel.Spec(spec.id, spec.name, definitions);
+             block.specs[spec._leagueName] =
+             new angular.scenario.ObjectModel.Spec(spec.id, spec._leagueName, definitions);
 
     // forward the event
     self.emit('SpecBegin', it);
@@ -30950,7 +30950,7 @@ angular.scenario.ObjectModel = function(runner) {
 
   runner.on('StepBegin', function(spec, step) {
     var it = self.getSpec(spec.id);
-    step = new angular.scenario.ObjectModel.Step(step.name);
+    step = new angular.scenario.ObjectModel.Step(step._leagueName);
     it.steps.push(step);
 
     // forward the event
@@ -30960,7 +30960,7 @@ angular.scenario.ObjectModel = function(runner) {
   runner.on('StepEnd', function(spec) {
     var it = self.getSpec(spec.id);
     var step = it.getLastStep();
-    if (step.name !== step.name)
+    if (step._leagueName !== step._leagueName)
       throw 'Events fired in the wrong order. Step names don\'t match.';
     complete(step);
 
@@ -31045,7 +31045,7 @@ angular.scenario.ObjectModel.prototype.emit = function(eventName) {
 angular.scenario.ObjectModel.prototype.getDefinitionPath = function(spec) {
   var path = [];
   var currentDefinition = spec.definition;
-  while (currentDefinition && currentDefinition.name) {
+  while (currentDefinition && currentDefinition._leagueName) {
     path.unshift(currentDefinition);
     currentDefinition = currentDefinition.parent;
   }
@@ -31071,7 +31071,7 @@ angular.scenario.ObjectModel.prototype.getSpec = function(id) {
  */
 angular.scenario.ObjectModel.Spec = function(id, name, definitionNames) {
   this.id = id;
-  this.name = name;
+  this._leagueName = name;
   this.startTime = new Date().getTime();
   this.steps = [];
   this.fullDefinitionName = (definitionNames || []).join(' ');
@@ -31117,7 +31117,7 @@ angular.scenario.ObjectModel.Spec.prototype.setStatusFromStep = function(step) {
  * @param {string} name Name of the step
  */
 angular.scenario.ObjectModel.Step = function(name) {
-  this.name = name;
+  this._leagueName = name;
   this.startTime = new Date().getTime();
 };
 
@@ -31709,9 +31709,9 @@ angular.scenario.dsl('input', function() {
   var supportInputEvent =  'oninput' in document.createElement('div') && msie != 9;
 
   chain.enter = function(value, event) {
-    return this.addFutureAction("input '" + this.name + "' enter '" + value + "'",
+    return this.addFutureAction("input '" + this._leagueName + "' enter '" + value + "'",
       function($window, $document, done) {
-        var input = $document.elements('[ng\\:model="$1"]', this.name).filter(':input');
+        var input = $document.elements('[ng\\:model="$1"]', this._leagueName).filter(':input');
         input.val(value);
         input.trigger(event || (supportInputEvent ? 'input' : 'change'));
         done();
@@ -31719,19 +31719,19 @@ angular.scenario.dsl('input', function() {
   };
 
   chain.check = function() {
-    return this.addFutureAction("checkbox '" + this.name + "' toggle",
+    return this.addFutureAction("checkbox '" + this._leagueName + "' toggle",
       function($window, $document, done) {
-        var input = $document.elements('[ng\\:model="$1"]', this.name).filter(':checkbox');
+        var input = $document.elements('[ng\\:model="$1"]', this._leagueName).filter(':checkbox');
         input.trigger('click');
         done();
     });
   };
 
   chain.select = function(value) {
-    return this.addFutureAction("radio button '" + this.name + "' toggle '" + value + "'",
+    return this.addFutureAction("radio button '" + this._leagueName + "' toggle '" + value + "'",
       function($window, $document, done) {
         var input = $document.
-          elements('[ng\\:model="$1"][value="$2"]', this.name, value).filter(':radio');
+          elements('[ng\\:model="$1"][value="$2"]', this._leagueName, value).filter(':radio');
         input.trigger('click');
         done();
     });
@@ -31739,13 +31739,13 @@ angular.scenario.dsl('input', function() {
 
   chain.val = function() {
     return this.addFutureAction("return input val", function($window, $document, done) {
-      var input = $document.elements('[ng\\:model="$1"]', this.name).filter(':input');
+      var input = $document.elements('[ng\\:model="$1"]', this._leagueName).filter(':input');
       done(null,input.val());
     });
   };
 
   return function(name) {
-    this.name = name;
+    this._leagueName = name;
     return chain;
   };
 });
@@ -31804,9 +31804,9 @@ angular.scenario.dsl('select', function() {
   var chain = {};
 
   chain.option = function(value) {
-    return this.addFutureAction("select '" + this.name + "' option '" + value + "'",
+    return this.addFutureAction("select '" + this._leagueName + "' option '" + value + "'",
       function($window, $document, done) {
-        var select = $document.elements('select[ng\\:model="$1"]', this.name);
+        var select = $document.elements('select[ng\\:model="$1"]', this._leagueName);
         var option = select.find('option[value="' + value + '"]');
         if (option.length) {
           select.val(value);
@@ -31830,9 +31830,9 @@ angular.scenario.dsl('select', function() {
 
   chain.options = function() {
     var values = arguments;
-    return this.addFutureAction("select '" + this.name + "' options '" + values + "'",
+    return this.addFutureAction("select '" + this._leagueName + "' options '" + values + "'",
       function($window, $document, done) {
-        var select = $document.elements('select[multiple][ng\\:model="$1"]', this.name);
+        var select = $document.elements('select[multiple][ng\\:model="$1"]', this._leagueName);
         select.val(values);
         select.trigger('change');
         done();
@@ -31840,7 +31840,7 @@ angular.scenario.dsl('select', function() {
   };
 
   return function(name) {
-    this.name = name;
+    this._leagueName = name;
     return chain;
   };
 });
@@ -32071,7 +32071,7 @@ angular.scenario.output('html', function(context, runner, model) {
       '  <ol class="test-actions"></ol>' +
       '</div>'
     );
-    ui.find('> .test-info .test-name').text(spec.name);
+    ui.find('> .test-info .test-name').text(spec._leagueName);
     ui.find('> .test-info').click(function() {
       var scrollpane = ui.find('> .scrollpane');
       var actions = scrollpane.find('> .test-actions');
@@ -32118,7 +32118,7 @@ angular.scenario.output('html', function(context, runner, model) {
       '<div class="timer-result"></div>' +
       '<div class="test-title"></div>'
     );
-    stepUi.find('> .test-title').text(step.name);
+    stepUi.find('> .test-title').text(step._leagueName);
     var scrollpane = stepUi.parents('.scrollpane');
     scrollpane.attr('scrollTop', scrollpane.attr('scrollHeight'));
   });
@@ -32161,7 +32161,7 @@ angular.scenario.output('html', function(context, runner, model) {
           '  <ul class="tests"></ul>' +
           '</div>'
         );
-        context.find('#' + id).find('> h2').text('describe: ' + defn.name);
+        context.find('#' + id).find('> h2').text('describe: ' + defn._leagueName);
       }
       currentContext = context.find('#' + id);
     });
@@ -32224,7 +32224,7 @@ angular.scenario.output('xml', function(context, runner, model) {
      angular.forEach(tree.children, function(child) {
        var describeContext = $('<describe></describe>');
        describeContext.attr('id', child.id);
-       describeContext.attr('name', child.name);
+       describeContext.attr('name', child._leagueName);
        context.append(describeContext);
        serializeXml(describeContext, child);
      });
@@ -32233,13 +32233,13 @@ angular.scenario.output('xml', function(context, runner, model) {
      angular.forEach(tree.specs, function(spec) {
        var it = $('<it></it>');
        it.attr('id', spec.id);
-       it.attr('name', spec.name);
+       it.attr('name', spec._leagueName);
        it.attr('duration', spec.duration);
        it.attr('status', spec.status);
        its.append(it);
        angular.forEach(spec.steps, function(step) {
          var stepContext = $('<step></step>');
-         stepContext.attr('name', step.name);
+         stepContext.attr('name', step._leagueName);
          stepContext.attr('duration', step.duration);
          stepContext.attr('status', step.status);
          it.append(stepContext);
@@ -32269,7 +32269,7 @@ var $runner = new angular.scenario.Runner(window),
     config = {};
 
 angular.forEach(script.attributes, function(attr) {
-  var match = attr.name.match(/ng[:\-](.*)/);
+  var match = attr._leagueName.match(/ng[:\-](.*)/);
   if (match) {
     config[match[1]] = attr.value || true;
   }

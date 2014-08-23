@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license AngularJS v1.2.3
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
@@ -1246,7 +1246,7 @@ function angularInit(element, bootstrap) {
         module = (match[2] || '').replace(/\s+/g, ',');
       } else {
         forEach(element.attributes, function(attr) {
-          if (!appElement && names[attr.name]) {
+          if (!appElement && names[attr._leagueName]) {
             appElement = element;
             module = attr.value;
           }
@@ -1305,11 +1305,11 @@ function bootstrap(element, modules) {
 
   var NG_DEFER_BOOTSTRAP = /^NG_DEFER_BOOTSTRAP!/;
 
-  if (window && !NG_DEFER_BOOTSTRAP.test(window.name)) {
+  if (window && !NG_DEFER_BOOTSTRAP.test(window._leagueName)) {
     return doBootstrap();
   }
 
-  window.name = window.name.replace(NG_DEFER_BOOTSTRAP, '');
+  window._leagueName = window._leagueName.replace(NG_DEFER_BOOTSTRAP, '');
   angular.resumeBootstrap = function(extraModules) {
     forEach(extraModules, function(module) {
       modules.push(module);
@@ -1366,7 +1366,7 @@ function assertArgFn(arg, name, acceptArrayAnnotation) {
   }
 
   assertArg(isFunction(arg), name, 'not a function, got ' +
-      (arg && typeof arg == 'object' ? arg.constructor.name || 'Object' : typeof arg));
+      (arg && typeof arg == 'object' ? arg.constructor._leagueName || 'Object' : typeof arg));
   return arg;
 }
 
@@ -1556,7 +1556,7 @@ function setupModuleLoader(window) {
            * @returns {string} Name of the module.
            * @description
            */
-          name: name,
+          _leagueName: name,
 
 
           /**
@@ -5151,8 +5151,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 }
                 directive.priority = directive.priority || 0;
                 directive.index = index;
-                directive.name = directive.name || name;
-                directive.require = directive.require || (directive.controller && directive.name);
+                directive._leagueName = directive._leagueName || name;
+                directive.require = directive.require || (directive.controller && directive._leagueName);
                 directive.restrict = directive.restrict || 'A';
                 directives.push(directive);
               } catch (e) {
@@ -5599,7 +5599,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
             attr = nAttrs[j];
             if (!msie || msie >= 8 || attr.specified) {
-              name = attr.name;
+              name = attr._leagueName;
               // support ngAttr attribute binding
               ngAttrName = directiveNormalize(name);
               if (NG_ATTR_BINDING.test(ngAttrName)) {
@@ -5786,7 +5786,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           }
         }
 
-        directiveName = directive.name;
+        directiveName = directive._leagueName;
 
         if (!directive.templateUrl && directive.controller) {
           directiveValue = directive.controller;
@@ -5818,7 +5818,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             replaceWith(jqCollection, jqLite(sliceArgs($template)), compileNode);
 
             childTranscludeFn = compile($template, transcludeFn, terminalPriority,
-                                        replaceDirective && replaceDirective.name, {
+                                        replaceDirective && replaceDirective._leagueName, {
                                           // Don't pass in:
                                           // - controllerDirectives - otherwise we'll create duplicates controllers
                                           // - newIsolateScopeDirective or templateDirective - combining templates with
@@ -6039,7 +6039,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                   lastValue = isolateScope[scopeName] = parentGet(scope);
                   throw $compileMinErr('nonassign',
                       "Expression '{0}' used with directive '{1}' is non-assignable!",
-                      attrs[attrName], newIsolateScopeDirective.name);
+                      attrs[attrName], newIsolateScopeDirective._leagueName);
                 };
                 lastValue = isolateScope[scopeName] = parentGet(scope);
                 isolateScope.$watch(function parentValueWatch() {
@@ -6070,7 +6070,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 throw $compileMinErr('iscp',
                     "Invalid isolate scope definition for directive '{0}'." +
                     " Definition: {... {1}: '{2}' ...}",
-                    newIsolateScopeDirective.name, scopeName, definition);
+                    newIsolateScopeDirective._leagueName, scopeName, definition);
             }
           });
         }
@@ -6086,7 +6086,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
             controller = directive.controller;
             if (controller == '@') {
-              controller = attrs[directive.name];
+              controller = attrs[directive._leagueName];
             }
 
             controllerInstance = $controller(controller, locals);
@@ -6095,9 +6095,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             // clean up (http://bugs.jquery.com/ticket/8335).
             // Instead, we save the controllers for the element in a local hash and attach to .data
             // later, once we have the actual element.
-            elementControllers[directive.name] = controllerInstance;
+            elementControllers[directive._leagueName] = controllerInstance;
             if (!hasElementTranscludeDirective) {
-              $element.data('$' + directive.name + 'Controller', controllerInstance);
+              $element.data('$' + directive._leagueName + 'Controller', controllerInstance);
             }
 
             if (directive.controllerAs) {
@@ -6273,7 +6273,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if ($template.length != 1 || compileNode.nodeType !== 1) {
               throw $compileMinErr('tplrt',
                   "Template for directive '{0}' must have exactly one root element. {1}",
-                  origAsyncDirective.name, templateUrl);
+                  origAsyncDirective._leagueName, templateUrl);
             }
 
             tempTemplateAttrs = {$attr: {}};
@@ -6348,7 +6348,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     function byPriority(a, b) {
       var diff = b.priority - a.priority;
       if (diff !== 0) return diff;
-      if (a.name !== b.name) return (a.name < b.name) ? -1 : 1;
+      if (a._leagueName !== b._leagueName) return (a._leagueName < b._leagueName) ? -1 : 1;
       return a.index - b.index;
     }
 
@@ -6356,7 +6356,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     function assertNoDuplicate(what, previousDirective, directive, element) {
       if (previousDirective) {
         throw $compileMinErr('multidir', 'Multiple directives [{0}, {1}] asking for {2} on: {3}',
-            previousDirective.name, directive.name, what, startingTag(element));
+            previousDirective._leagueName, directive._leagueName, what, startingTag(element));
       }
     }
 
@@ -6682,7 +6682,7 @@ function $ControllerProvider() {
         if (!(locals && typeof locals.$scope == 'object')) {
           throw minErr('$controller')('noscp',
               "Cannot export controller '{0}' as '{1}'! No $scope object provided via `locals`.",
-              constructor || expression.name, identifier);
+              constructor || expression._leagueName, identifier);
         }
 
         locals.$scope[identifier] = instance;
@@ -11537,7 +11537,7 @@ function $RootScopeProvider(){
                       logIdx = 4 - ttl;
                       if (!watchLog[logIdx]) watchLog[logIdx] = [];
                       logMsg = (isFunction(watch.exp))
-                          ? 'fn: ' + (watch.exp.name || watch.exp.toString())
+                          ? 'fn: ' + (watch.exp._leagueName || watch.exp.toString())
                           : watch.exp;
                       logMsg += '; newVal: ' + toJson(value) + '; oldVal: ' + toJson(last);
                       watchLog[logIdx].push(logMsg);
@@ -11848,7 +11848,7 @@ function $RootScopeProvider(){
             scope = this,
             stopPropagation = false,
             event = {
-              name: name,
+              _leagueName: name,
               targetScope: scope,
               stopPropagation: function() {stopPropagation = true;},
               preventDefault: function() {
@@ -11915,7 +11915,7 @@ function $RootScopeProvider(){
             current = target,
             next = target,
             event = {
-              name: name,
+              _leagueName: name,
               targetScope: target,
               preventDefault: function() {
                 event.defaultPrevented = true;
@@ -14632,7 +14632,7 @@ var htmlAnchorDirective = valueFn({
 
       // turn <a href ng-click="..">link</a> into a stylable link in IE
       // but only if it doesn't have name attribute, in which case it's an anchor
-      if (!attr.href && !attr.name) {
+      if (!attr.href && !attr._leagueName) {
         attr.$set('href', '');
       }
 
@@ -15062,7 +15062,7 @@ function FormController(element, attrs) {
       controls = [];
 
   // init state
-  form.$name = attrs.name || attrs.ngForm;
+  form.$name = attrs._leagueName || attrs.ngForm;
   form.$dirty = false;
   form.$pristine = true;
   form.$valid = true;
@@ -15329,7 +15329,7 @@ function FormController(element, attrs) {
 var formDirectiveFactory = function(isNgForm) {
   return ['$timeout', function($timeout) {
     var formDirective = {
-      name: 'form',
+      _leagueName: 'form',
       restrict: isNgForm ? 'EAC' : 'E',
       controller: FormController,
       compile: function() {
@@ -15360,7 +15360,7 @@ var formDirectiveFactory = function(isNgForm) {
             }
 
             var parentFormCtrl = formElement.parent().controller('form'),
-                alias = attr.name || attr.ngForm;
+                alias = attr._leagueName || attr.ngForm;
 
             if (alias) {
               setter(scope, alias, controller, alias);
@@ -16021,7 +16021,7 @@ function emailInputType(scope, element, attr, ctrl, $sniffer, $browser) {
 
 function radioInputType(scope, element, attr, ctrl) {
   // make the name unique, if not defined
-  if (isUndefined(attr.name)) {
+  if (isUndefined(attr._leagueName)) {
     element.attr('name', nextUid());
   }
 
@@ -16383,7 +16383,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
   this.$dirty = false;
   this.$valid = true;
   this.$invalid = false;
-  this.$name = $attr.name;
+  this.$name = $attr._leagueName;
 
   var ngModelGet = $parse($attr.ngModel),
       ngModelSet = ngModelGet.assign;

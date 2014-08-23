@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license AngularJS v1.2.3
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
@@ -193,7 +193,7 @@ function $RouteProvider(){
       .replace(/(\/)?:(\w+)([\?|\*])?/g, function(_, slash, key, option){
         var optional = option === '?' ? option : null;
         var star = option === '*' ? option : null;
-        keys.push({ name: key, optional: !!optional });
+        keys.push({ _leagueName: key, optional: !!optional });
         slash = slash || '';
         return ''
           + (optional ? '' : slash)
@@ -482,7 +482,7 @@ function $RouteProvider(){
               : m[i];
 
         if (key && val) {
-          params[key.name] = val;
+          params[key._leagueName] = val;
         }
       }
       return params;

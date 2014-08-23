@@ -106,12 +106,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="liga in ligas | orderBy:OrdenSeleccionado | filter:buscar">
+                        <tr ng-repeat="liga in ArrLeagues | orderBy:OrdenSeleccionado | filter:buscar">
                             <td><a class="btn-link" href="/league/{{liga.id}}">{{liga.nombre}}</a></td>
                             <td>{{liga.pais | uppercase}}</td>
-                            <td>{{liga.inicio | date:'fullDate'}}</td>
-                            <td>{{liga.fin | date:'fullDate'}} </td>
-                            <td>{{liga.cant_equipos}}</td>
+                            <td>{{liga.seasonStart | date:'fullDate'}}</td>
+                            <td>{{liga.seasonEnd | date:'fullDate'}} </td>
+                            <td>{{liga.numberOfTeams}}</td>
                             <td>
                                 <a href="" ng-click="removeLeague(liga.nombre)"><i class="glyphicon glyphicon-trash"></i></a>
                             </td>
@@ -148,12 +148,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="unsub in unsubsciptions | orderBy:OrdenSeleccionado | filter:buscar">
-                            <td><a class="btn-link" href="/league/{{liga.id}}">{{unsub.nombre}}</a></td>
+                        <tr ng-repeat="unsub in unsubscribedLeagues | orderBy:OrdenSeleccionado | filter:buscar">
+                            <td><a class="btn-link" href="/league/{{ArrLeagues._leagueID}}">{{unsub.nombre}}</a></td>
                             <td>{{unsub.pais | uppercase}}</td>
-                            <td>{{unsub.inicio | date:'fullDate'}}</td>
-                            <td>{{unsub.fin | date:'fullDate'}} </td>
-                            <td>{{unsub.cant_equipos}}</td>
+                            <td>{{unsub.seasonStart | date:'fullDate'}}</td>
+                            <td>{{unsub.seasonEnd | date:'fullDate'}} </td>
+                            <td>{{unsub.numberOfTeams}}</td>
                             <td>
                                 <a href="" ng-click="addLeague(unsub.nombre)"><i class="glyphicon glyphicon-plus"></i></a>
                             </td>
@@ -182,11 +182,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="filter in filteredMatches">
-                                <td>{{filter.id_liga}}</td>
+                            <tr ng-repeat="filter in subcribedLeagueGames">
+                                <td>{{filter._leagueID}}</td>
                                 <td>{{filter.nombre}}</td>
-                                <td>{{filter.fecha}}</td>
-                                <td>{{filter.resultado1}}-{{filter.resultado2}}</td>
+                                <td>{{filter.gameDate}}</td>
+                                <td>{{filter.score1}}-{{filter.score2}}</td>
                                 <td>
                                     <a href="" ng-click="activate(filter.nombre)"><i class="glyphicon glyphicon-pencil"></i></a>
                                 </td>
@@ -209,7 +209,7 @@
             </div>
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit">Guardar</button>
-                <button class="btn btn-primary btn-block" type="button" ng-click="deactivate()">Cancelar</button>
+                <button class="btn btn-primary btn-block" type="button" ng-click="IsFinishedAddingScore()">Cancelar</button>
             </div>
         </div>
     </form>
