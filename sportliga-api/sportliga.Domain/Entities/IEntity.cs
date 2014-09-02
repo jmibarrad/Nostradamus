@@ -8,7 +8,7 @@ namespace sportliga.Domain.Entities
 {
      public  interface IEntity
    {
-        long Id { get; set; }
+        long GlobalID { get; set; }
         bool IsArchived { get; set; }
     }
 }
