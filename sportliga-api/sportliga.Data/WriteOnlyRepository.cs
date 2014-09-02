@@ -28,7 +28,7 @@ namespace sportliga.Data
         {
             foreach (var item in _session.QueryOver<T>().List())
             {
-                Delete<T>(item.GlobalID);
+                Delete<T>(item.Id);
             }
         }
 

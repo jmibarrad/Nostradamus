@@ -5,14 +5,15 @@ namespace sportliga.Domain.Entities
 {
     public class Leagues : IEntity
     {
-        public virtual long GlobalID { get; set; }
+        public virtual long Id { get; set; }
         public virtual bool IsArchived { get; set; }
-        public virtual string LeagueName { get; set; }
-        public virtual string WhereAbouts { get; set; }
-        public virtual DateTime EndDate{ get; set; }
-        public virtual DateTime StartDate { get; set; }
-        public virtual int TeamCounter { get; set; }
-        public virtual bool Subscribed { get; set; }
-        public virtual IEnumerable< Equipos> LeagueArray { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string PaisDeLiga { get; set; }
+        public virtual DateTime FechaDeInicio{ get; set; }
+        public virtual DateTime FechaDeFinalizacion { get; set; }
+        public virtual int CantidadEquipos { get; set; }
+        public virtual bool Suscrito { get; set; }
+        public virtual DateTime FechaDeIncipcion { get; set; }
+        public virtual IEnumerable< Equipos> EquiposLeague { get; set; }
     }
 }

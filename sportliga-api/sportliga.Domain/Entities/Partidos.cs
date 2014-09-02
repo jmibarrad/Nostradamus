@@ -4,14 +4,12 @@ namespace sportliga.Domain.Entities
 {
     public class Partidos : IEntity
     {
-        public virtual long GlobalID { get; set; }
-        public virtual string HomeTeam { get; set; }
-        public virtual string VisitorTeam { get; set; }
-
-        public virtual int HomeGoals { get; set; }
-        public virtual int VisitorGoals { get; set; }
-        
-        public virtual DateTime MatchDate { get; set; }
+        public virtual long Id { get; set; }
+        public virtual string EquipoLocal { get; set; }
+        public virtual int GolesLocal { get; set; }
+        public virtual int GolesVisitante { get; set; }
+        public virtual string EquipoVisitante { get; set; }
+        public virtual DateTime Fecha { get; set; }
         public virtual bool IsArchived { get; set; }
     }
 }
