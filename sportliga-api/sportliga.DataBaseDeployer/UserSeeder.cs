@@ -26,13 +26,15 @@ namespace sportliga.DataBaseDeployer
             _session.Save( new CuentaDeUsuario
             {
                 Email = "P4@html.com",
-                Name = "chuck",
+                UserName = "Chuck",
+                UserSurname = "Norris",
                 Password = SimplerAES.Encrypt("Ibarra")
             });
             _session.Save(new CuentaDeUsuario
             {
                 Email = "P4@Resharper.live",
-                Name = "noris",
+                UserName = "Jose",
+                UserSurname = "Ibarra",
                 Password = SimplerAES.Encrypt("JoseM")
             });
 
