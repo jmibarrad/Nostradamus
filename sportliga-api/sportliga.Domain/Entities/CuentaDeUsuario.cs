@@ -13,5 +13,10 @@ namespace sportliga.Domain.Entities
         public virtual string AuxiliaryEmail { get; set; }
         public virtual bool IsArchived { get; set; }
         public virtual IEnumerable<Leagues> SubscribedLeagueArray { get; set; }
+
+        public virtual bool CheckPassword(string password)
+        {
+            return true;
+        }
     }
 }
