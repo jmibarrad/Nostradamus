@@ -1,0 +1,52 @@
+﻿@{
+    PageData["title"] = "AngularJS SPA | Sign In";
+}
+
+<div class="container">
+    <div class="logo">
+        <span class="left"><</span>Login<span class="right">/></span>
+        <div class="text">
+            <span class="word">Notradamus</span><span class="web">|Soccer</span>
+        </div>
+    </div>
+</div>
+
+<html lang="en-US">
+<head>
+
+    <meta charset="utf-8">
+
+    <title>Nostradamus | Login</title>
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link href="~/Views/Login.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    
+
+</head>
+
+
+
+    <body>
+        <div id="login">
+
+        <form action="javascript:void(0);"  ng-submit="login()">
+            
+            <fieldset class="clearfix">
+                <p><span class="fontawesome-user"></span><input type="text" ng-model="user.Email" class="form-control" placeholder="Email" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
+                <p><span class="fontawesome-lock"></span><input type="password" ng-model="user.Password" class="form-control" placeholder="Password" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
+                <p><input type="submit" value="Sign In"></p>
+
+            </fieldset>
+
+        </form>
+
+        <p>Not a member? <a href="/register">Sign up now</a><span class="fontawesome-arrow-right"></span></p>
+
+    </div> <!-- end login -->
+
+</body>
+</html>
